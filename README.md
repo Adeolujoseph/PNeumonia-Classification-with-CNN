@@ -52,24 +52,43 @@ pytorch_lightning
    
       B. Last Fully Connected Layer : Changed output dimension fromm 1000 to 1 suitable for binary classification
    
-3. Loss Function : BCEWithLogitsLoss
-      Directly applied to logits (raw prediction)
-      Negative output turned into No pneumonia
-4. Optimizer: Adam (lr=1e-4)
-5. Trained for 35 epochs
+3. Loss Function : BCEWithLogitsLoss. Using pos_weight 1,2.22 and 4.44 (26684/6012=4.44 to handle class imbalance by giving more weight to the minority positive c     class)
+   Directly applied to logits (raw prediction)
+      
+4. Optimizer: Adam (lr=1e-4) with ReduceLROnPlateau scheduler to update learning rate based on Average Validation loss performance
+5. Trained for 10 epochs
    
-Training was done in google collaboratory environment to utilize A-100 GPU 
+Training was done in google collaboratory environment to utilize V-100 GPU 
 
 ## Evaluation and testing
 
-1.Performance Metrics used for model selection is Validation Epoch Average Loss
-2.Validation accuracy lies around 84% which shows this can still be improved
-3.Precision is higher than recall with default threshold of 0.5. This is not so good for this scenerio as it is better to have extremely low false negatives i.e we dont want to miss anyone that has pneumonia
-4.Using a threshold of 0.25 improved the recall significantly
+1.Performance Metrics used are Validation Epoch Average Loss, Accuracy, Precision , Recall and F1-score.
+
+2.Best Validation accuracy lies around 84% which shows this can still be improved
+
+3.Overall Best model across all weights is found at Using Weight 1.0, with validation loss: 0.35049563578583975 at epoch 9
+
+4.Overall Best Accuracy found at Using Weight 1.0, with Accuracy : 84.87% at epoch 4
+
+5.Overall Best Weighted Precision found at Using Weight 4.440000057220459, with Precision : 0.84 at epoch 5
+
+6.Overall Best Weighted Recall found at Using Weight 1.0, with Recall : 0.85 at epoch 4 
+
+7.Overall Best Weighted F1 found at Using Weight 1.0, with F1 : 0.84 at epoch 2
+
+8.As expected, best positive class Recall (0.85) was obtained using weight 4.44 at epoch 4. Since more emphasis is placed on the minority class using pos_weight 
+  in the loss function
+
+## Trade-Offs
+1.If both classes are prioritized, using weight 1 produced a better model
+
+2.If Positive class is prioritized(i.e picking out pneunomia ,more suitable for diagnosis ). Using model of weight of 4.44  will be better since it has higher recall i.e we dont want to miss anyone that has pneumonia and dont mind many false positives. Reducing the threshold from 0.5 will also help in this direction
 
 
 ## Project Limitations and Future Work
-Class imbalance affected the model performance as we have excessively larger number of images with no pneumonia than with pneumonia. I will be trying weighted loss and oversampling techniques in a bid to get a better perfomance. 
+Class imbalance affected the model performance as we have excessively larger number of images with no pneumonia than with pneumonia. 
+Weighted Loss helped class imbalance as it improved positive class recall but caused model overfitting on the minority class examples, causing it to perform poorly on the majority class.
+I will be trying Oversampling techniques in a bid to get a better perfomance. 
 
 
 
