@@ -1,4 +1,4 @@
-# PNeumonia-Classification-with-CNN
+# Pneumonia Classification Using Transfer Learning (ResNet18 and ResNet50)
 Creating a Model that can diagnose pneumonia with an xray image
 
 ## Background
@@ -52,8 +52,8 @@ pytorch_lightning
    
       B. Last Fully Connected Layer : Changed output dimension fromm 1000 to 1 suitable for binary classification
    
-3. Loss Function : BCEWithLogitsLoss. Using pos_weight 1,2.22 and 4.44 (26684/6012=4.44 to handle class imbalance by giving more weight to the minority positive c     class)
-   Directly applied to logits (raw prediction)
+3. Loss Function : BCEWithLogitsLoss. Using pos_weight 1,2.22 and 4.44 (26684/6012=4.44 to handle class imbalance by giving more weight to the minority positive class)
+   Loss Function directly applied to logits (raw prediction)
       
 4. Optimizer: Adam (lr=1e-4) with ReduceLROnPlateau scheduler to update learning rate based on Average Validation loss performance
 5. Trained for 10 epochs
@@ -61,6 +61,8 @@ pytorch_lightning
 Training was done in google collaboratory environment to utilize V-100 GPU 
 
 ## Evaluation and testing
+
+RESNET-18
 
 1.Performance Metrics used are Validation Epoch Average Loss, Accuracy, Precision , Recall and F1-score.
 
@@ -79,6 +81,8 @@ Training was done in google collaboratory environment to utilize V-100 GPU
 8.As expected, best positive class Recall (0.85) was obtained using weight 4.44 at epoch 4. Since more emphasis is placed on the minority class using pos_weight 
   in the loss function
 
+
+
 ## Trade-Offs
 1.If both classes are prioritized, using weight 1 produced a better model
 
@@ -89,6 +93,11 @@ Training was done in google collaboratory environment to utilize V-100 GPU
 Class imbalance affected the model performance as we have excessively larger number of images with no pneumonia than with pneumonia. 
 Weighted Loss helped class imbalance as it improved positive class recall but caused model overfitting on the minority class examples, causing it to perform poorly on the majority class.
 I will be trying Oversampling techniques in a bid to get a better perfomance. 
+
+
+# RESNET-50
+
+Resnet-50 performed slighly lower than RESNET-18 as seen in the 'PneumoniaResnet50_training_pos_weights.ipynb' file
 
 
 
