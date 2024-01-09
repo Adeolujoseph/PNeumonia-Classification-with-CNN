@@ -52,8 +52,8 @@ pytorch_lightning
    
       B. Last Fully Connected Layer : Changed output dimension fromm 1000 to 1 suitable for binary classification
    
-3. Loss Function : BCEWithLogitsLoss. Using pos_weight 1,2.22 and 4.44 (26684/6012=4.44 to handle class imbalance by giving more weight to the minority positive class)
-   Loss Function directly applied to logits (raw prediction)
+3. Loss Function : BCEWithLogitsLoss. Using pos_weight 1,2.22 and 4.44  to handle class imbalance by giving more weight to the minority positive class)
+   Loss Function directly applied to logits (raw prediction).20672/6012=3.44 was also tried but not recorded. 
       
 4. Optimizer: Adam (lr=1e-4) with ReduceLROnPlateau scheduler to update learning rate based on Average Validation loss performance
 5. Trained for 10 epochs
